@@ -1,0 +1,41 @@
+<form class="flex flex-col mt-3 pl-3 w-80 gap-2" #empForm="ngForm" (ngSubmit)="onSubmit(empForm)">
+  <input type="text" placeholder="Enter Name" [(ngModel)]="emp.name" name="name" #name="ngModel"  required />
+  <div *ngIf="name.invalid && name.touched" class="text-red-500">
+      Name is required.
+  </div>
+  <input type="text" placeholder="Enter Phone Number" [(ngModel)]="emp.phoneNumber" name="phoneNumber" #phoneNumber="ngModel" required />
+  <div *ngIf="phoneNumber.invalid && phoneNumber.touched" class="text-red-500">
+      Phone Number is required.
+  </div>
+  <input type="number" placeholder="Enter Salary" [(ngModel)]="emp.salary" name="salary" #salary="ngModel" required/>
+  <div *ngIf="salary.invalid && salary.touched" class="text-red-500">
+      Salary is required.
+  </div>
+  <input type="email" placeholder="Enter email" [(ngModel)]="emp.email" name="email" #email="ngModel" required email />
+  <div *ngIf="email.invalid && (email.touched || email.dirty)" class="text-red-500">
+    <span *ngIf="email.errors?.['required']" class="text-red-500">Email is required</span>
+    <span *ngIf="email.errors?.['email']">Must be a valid email</span>
+  </div>
+  <select name="department" [(ngModel)]="emp.department" #department="ngModel" required>
+     <!-- <option value="" selected [disabled]="emp.department != ''">Select Address</option> -->
+    <option *ngFor="let dept of departments$ | async" [value]="dept.id">{{ dept.name }}</option>
+  </select>
+  <div *ngIf="department.invalid && department.touched" class="text-red-500">
+      Department is required.
+  </div>
+  <select name="manager" [(ngModel)]="emp.manager" #manager="ngModel" required>
+     <!-- <option value="" selected [disabled]="emp.manager != ''">Select Address</option> -->
+    <option *ngFor="let manager of managers$ | async" [value]="manager.id">{{ manager.name }}</option>
+  </select>
+  <div *ngIf="manager.invalid && manager.touched" class="text-red-500">
+      Manager is required.
+  </div>
+  <select name="address" [(ngModel)]="emp.address" placeholder="Select Address" #address="ngModel" required>
+    <!-- <option value="" selected [disabled]="emp.address != ''">Select Address</option> -->
+    <option *ngFor="let address of addresses$ | async" [value]="address.id">{{ address.address }}</option>
+  </select>
+  <div *ngIf="address.invalid && address.touched" class="text-red-500">
+      Address is required.
+  </div>
+  <button type="submit" [disabled]="empForm.invalid">submit</button>
+</form>

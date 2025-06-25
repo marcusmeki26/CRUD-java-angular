@@ -1,0 +1,35 @@
+button{
+  font-size: 1.35rem;
+  color: white;
+  background-color: lightblue;
+  padding: 0 1.5em;
+  border-radius: 2rem;
+  cursor: pointer;
+}
+
+button:hover{
+  color: lightblue;
+  background-color: white;
+  transition: 0.5s;
+}
+
+input{
+  font-size: 1.35rem;
+  padding: 0 .5em;
+  border-radius: 0.5rem;
+  border: 1px solid lightblue;
+}
+
+input:focus{
+  outline: none;
+}
+
+th, td{
+  border: 3px solid lightblue;
+  padding: .5em;
+}
+
+.action-row img{
+  width: 2rem;
+  height: 2rem;
+}
