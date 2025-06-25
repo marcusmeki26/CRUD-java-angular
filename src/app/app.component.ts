@@ -6,6 +6,5 @@ import { Component } from '@angular/core';
   standalone: false,
   styleUrl: './app.component.css'
 })
-export class AppComponent {
-  title = 'CRUD-EmployeeAngular';
+export class AppComponent{
 }

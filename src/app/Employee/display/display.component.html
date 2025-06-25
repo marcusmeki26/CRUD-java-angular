@@ -1,0 +1,37 @@
+<!-- Top Part -->
+<section class="mt-3 flex justify-between px-3">
+  <!-- Search -->
+  <div>
+    <input type="text" class="border border-blue-200">
+  </div>
+  <!-- Buttons -->
+  <div class="flex gap-2">
+  <button [routerLink]="'/employee/insert'">Insert</button>
+  </div>
+</section>
+<!-- Display Part -->
+<section class="flex justify-center align-center mt-3">
+  <table class="border-collapse">
+    <thead>
+      <th>ID</th>
+      <th>Employee's Name</th>
+      <th>Employee's Email</th>
+      <th>Manager Assigned</th>
+      <th>Department Assigned</th>
+      <th>Action</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let employee of employees$ | async">
+        <td>{{ employee.id }}</td>
+        <td>{{ employee.name }}</td>
+        <td>{{ employee.email }}</td>
+        <td>{{ employee.managerName }}</td>
+        <td>{{ employee.department }}</td>
+        <td class="action-row">
+          <button class="action-btn mr-3" routerLink="/employee/edit/{{ employee.id }}"><img src="pencil.svg" alt=""></button>
+          <button class="action-btn" (click)="deleteUser(employee.id)"><img src="delete.png" alt=""></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
