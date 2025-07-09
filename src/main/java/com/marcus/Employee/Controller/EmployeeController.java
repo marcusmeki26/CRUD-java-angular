@@ -50,7 +50,7 @@ public class EmployeeController {
         Optional<Employee> optionalEmp = employeeRepository.findById(id);
 
         return ResponseEntity.ok(optionalEmp
-                .orElseThrow(() -> new ResourceNotFoundException("No Id Found")));
+                .orElseThrow(() -> new ResourceNotFoundException("No Id Found", HttpStatus.NOT_FOUND.value())));
     }
 
     @PostMapping
@@ -64,42 +64,39 @@ public class EmployeeController {
     public ResponseEntity<String> updateEmployee(@PathVariable Integer id,
                                                  @Valid @RequestBody EmployeeRequest employee){
 
-        Optional<Employee> optional = employeeRepository.findById(id);
+        Employee existingEmp = employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No ID Found", HttpStatus.NOT_FOUND.value()));
 
-        if(optional.isPresent()){
-            Employee existingEmp = optional.get();
-            existingEmp.setName(employee.getName());
-            existingEmp.setPhoneNumber(employee.getPhoneNumber());
-            existingEmp.setSalary(employee.getSalary());
-            existingEmp.setEmail(employee.getEmail());
+        // Updating the existing fields
+        existingEmp.setName(employee.getName());
+        existingEmp.setPhoneNumber(employee.getPhoneNumber());
+        existingEmp.setSalary(employee.getSalary());
+        existingEmp.setEmail(employee.getEmail());
 
-            Manager manager = managerRepository.findById(employee.getManager())
-                            .orElseThrow(() -> new ResourceNotFoundException("No Manager Found"));
-            existingEmp.setManager(manager);
+        Manager manager = managerRepository.findById(employee.getManager())
+                        .orElseThrow(() -> new ResourceNotFoundException("No Manager Found", HttpStatus.NOT_FOUND.value()));
+        existingEmp.setManager(manager);
 
-            Department department = departmentRepository.findById(employee.getDepartment())
-                    .orElseThrow(() -> new ResourceNotFoundException("No Department Found"));
-            existingEmp.setDepartment(department);
+        Department department = departmentRepository.findById(employee.getDepartment())
+                .orElseThrow(() -> new ResourceNotFoundException("No Department Found", HttpStatus.NOT_FOUND.value()));
+        existingEmp.setDepartment(department);
 
-            Address address = addressRepository.findById(employee.getAddress())
-                    .orElseThrow(() -> new ResourceNotFoundException("No Address Found"));
-            existingEmp.setAddress(address);
+        Address address = addressRepository.findById(employee.getAddress())
+                .orElseThrow(() -> new ResourceNotFoundException("No Address Found", HttpStatus.NOT_FOUND.value()));
+        existingEmp.setAddress(address);
 
-            employeeRepository.save(existingEmp);
-            return ResponseEntity.ok("Successfully Updated");
-        }
+        employeeRepository.save(existingEmp);
 
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok("Successfully Updated");
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable Integer id){
 
-        if(employeeRepository.existsById(id)){
-            employeeRepository.deleteById(id);
-            return ResponseEntity.ok("Successfully deleted");
-        }
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No ID Found", HttpStatus.NOT_FOUND.value()));
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employee with ID of " + id + " is not found");
+        employeeRepository.delete(employee);
+        return ResponseEntity.ok("Successfully Deleted");
     }
 }
