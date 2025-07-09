@@ -1,6 +1,7 @@
 package com.marcus.Employee.Exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,7 +28,7 @@ public class GlobalExceptionHandler{
     public ResponseEntity<ErrorMessage> handleMethodArgumentNotValidException(ResourceNotFoundException e){
         Map<String, String> errors = new HashMap<>();
         errors.put("error", e.getMessage());
-        ErrorMessage errorMessage = new ErrorMessage(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "Missing values", errors.toString());
-        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+        ErrorMessage errorMessage = new ErrorMessage(LocalDateTime.now(), e.status, "Missing values", errors.toString());
+        return new ResponseEntity<>(errorMessage, HttpStatusCode.valueOf(e.status));
     }
 }
