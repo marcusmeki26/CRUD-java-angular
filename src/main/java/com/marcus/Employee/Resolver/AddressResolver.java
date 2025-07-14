@@ -6,6 +6,7 @@ import com.marcus.Employee.Repository.AddressRepository;
 
 import lombok.AllArgsConstructor;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,6 +16,6 @@ public class AddressResolver {
 
     public Address map(Integer id){
         return addressRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("No Address Found"));
+                .orElseThrow(() -> new ResourceNotFoundException("No Address Found", HttpStatus.NOT_FOUND.value()));
     }
 }
