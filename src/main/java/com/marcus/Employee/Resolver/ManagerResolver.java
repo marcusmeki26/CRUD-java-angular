@@ -6,6 +6,7 @@ import com.marcus.Employee.Repository.ManagerRepository;
 
 import lombok.AllArgsConstructor;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,6 +16,6 @@ public class ManagerResolver {
 
     public Manager map(Integer id){
         return managerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("No Manager Found"));
+                .orElseThrow(() -> new ResourceNotFoundException("No Manager Found", HttpStatus.NOT_FOUND.value()));
     }
 }

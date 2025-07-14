@@ -6,6 +6,7 @@ import com.marcus.Employee.Repository.DepartmentRepository;
 
 import lombok.AllArgsConstructor;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,7 +16,7 @@ public class DepartmentResolver {
 
     public Department map(Integer id){
         return departmentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Department Not Found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Department Not Found!", HttpStatus.NOT_FOUND.value()));
     }
 }
 
